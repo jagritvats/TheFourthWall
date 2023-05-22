@@ -11,27 +11,34 @@ public class ReneController : MonoBehaviour
     public static bool userConnected = false;
     public static List<Asset> assetList;
     public static ReneController controller = null;
-    //static API reneApi;
-
-    public static void InitiateAuth(API reneApi)
-    {
-        Debug.Log("Auth init");
-        StaticCoroutine.Start(ConnectReneService(reneApi));
-    }
+    public static API reneApi = null;
 
     public static async void ConnectToReneverse(string email)
     {
-        var reneApi = ReneAPIManager.API();
+        reneApi = ReneAPIManager.API();
         if (reneApi == null)
         {
             Debug.Log("Not Initalized");
             return;
         }       
         await reneApi.Game().Connect(email);
-        InitiateAuth(reneApi);
+        StaticCoroutine.Start(ConnectReneService());
     }
 
-    public static IEnumerator ConnectReneService(API reneApi)
+    public static async Task SearchForPlayers()
+    {
+        if(userConnected)
+        {
+            var ans = await reneApi.User().Search("jagritvats6@gmail.com");
+            ans.Items.ForEach(item =>
+            {
+                Debug.Log(item.Email);
+            });
+
+        }
+    }
+
+    private static IEnumerator ConnectReneService()
     {
         var counter = 0;
         //Interval how often the code checks that user accepted to log in
@@ -48,7 +55,7 @@ public class ReneController : MonoBehaviour
 
                 Debug.Log("Authorized !");
 
-                yield return GetUserAssetsAsync(reneApi);
+                yield return GetUserAssetsAsync();
                 userConnected = true;
                /* if (reneverseConnectionStatus)
                 {
@@ -62,7 +69,7 @@ public class ReneController : MonoBehaviour
     }
 
 
-    private static async Task GetUserAssetsAsync(API reneApi)
+    private static async Task GetUserAssetsAsync()
     {
         Debug.Log("Getting Assets!");
         AssetsResponse.AssetsData userAssets = await reneApi.Game().Assets();
@@ -112,5 +119,7 @@ public class ReneController : MonoBehaviour
         
         Debug.Log("Synced Assets!");
     }
+
+
 
 }
