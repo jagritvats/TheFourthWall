@@ -14,7 +14,11 @@ public class MenuController : MonoBehaviour
 
     void Start()
     {
-        CurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        
+        if(ReneController.userConnected)
+        {
+            StartCoroutine(CheckForRenev());
+        }
     }
 
     public void LoadMenu()
