@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,7 +36,20 @@ public class MenuController : MonoBehaviour
         }
         string email = emailInput.text;
         initiateReneverseConnection(email);
+        StartCoroutine(CheckForRenev());
+    }
 
+    bool IsUserConnected()
+    {
+        return ReneController.userConnected;
+    }
+
+    private IEnumerator CheckForRenev()
+    {
+       
+            yield return new WaitUntil(IsUserConnected);
+        reneverseConnectionStatus.text = "Connected Succesfully!";
+        
     }
 
     private void initiateReneverseConnection(string email)
