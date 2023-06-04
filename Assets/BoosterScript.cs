@@ -28,7 +28,7 @@ public class BoosterScript : MonoBehaviour
 
             GetComponent<AudioSource>().PlayOneShot(AudioClip);
             spriteRenderer.enabled = false;
-            manager.addScore(10);
+            manager.addScore(2);
             Destroy(gameObject, AudioClip.length);
         }
     }

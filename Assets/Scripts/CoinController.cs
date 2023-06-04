@@ -26,12 +26,15 @@ public class CoinController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ReneController.MintCoin();
-        Debug.Log("Coin Collected");
-        GetComponent<AudioSource>().PlayOneShot(AudioClip);
-        spriteRenderer.enabled = false;
-        manager.addScore(1);
-        Destroy(gameObject, AudioClip.length);
+        if (collision.gameObject.tag == "Player")
+        {
+            ReneController.MintCoin();
+            Debug.Log("Coin Collected");
+            GetComponent<AudioSource>().PlayOneShot(AudioClip);
+            spriteRenderer.enabled = false;
+            manager.addScore(1);
+            Destroy(gameObject, AudioClip.length);
+        }
        
     }
     /*

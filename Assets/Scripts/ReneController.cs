@@ -32,13 +32,14 @@ public class ReneController : MonoBehaviour
 
     public static async void MintBooster()
     {
-
+        if (!controller) { return; }
         await reneApi.Game().AssetMint(BOOSTER_TEMPLATE_ID);
         Debug.Log("Booster minted!");
     }
 
     public static async void MintCoin()
     {
+        if (!controller) { return; }
 
         await reneApi.Game().AssetMint(COIN_TEMPLATE_ID);
         Debug.Log("Coin minted!");
