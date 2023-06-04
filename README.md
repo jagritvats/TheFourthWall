@@ -15,7 +15,7 @@ In this game, you control a character in a 2D environment. Your objective is to 
 
 ## Installation
 
-1. Get the latest release: [Alpha Release](https://github.com/jagritvats/RenenverseIntegration/releases/tag/v0.0.1-alpha)
+1. Get the latest release: [Alpha Release](https://github.com/jagritvats/TheFourthWall/releases/tag/v0.0.2-alpha)
 2. Open the game directory on your machine.
 
 ## Controls
