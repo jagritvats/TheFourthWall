@@ -12,7 +12,6 @@ In this game, you control a character in a 2D environment. Your objective is to 
 -   **Coin Collection:** Throughout each level, you will find coins scattered around. Make sure to collect as many coins as possible to increase your score. Can you find all the hidden coins?
 -   **Flag Completion:** Once you've collected all the coins, head towards the flag to finish the level. Touching the flag will unlock the next level, where new challenges await!
 -   **Multiple Levels:** Prepare yourself for an array of levels with increasing difficulty. Each level presents unique obstacles and puzzles that you must overcome to progress further in the game.
--   **High Scores:** Compete against yourself and others for the highest score. Can you beat your own record and become the ultimate coin collector?
 
 ## Installation
 
