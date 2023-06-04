@@ -1,6 +1,7 @@
 using Rene.Sdk;
 using Rene.Sdk.Api.Game.Data;
 using ReneVerse;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,9 +14,13 @@ public class ReneController : MonoBehaviour
     public static ReneController controller = null;
     public static API reneApi = null;
 
+    public static string BOOSTER_TEMPLATE_ID = "8137f252-183b-44db-9e8d-57ce81edad01";
+    public static string COIN_TEMPLATE_ID = "0e7f37bd-7075-4cc1-a927-935ed9cd51a7";
+
     public static async void ConnectToReneverse(string email)
     {
         reneApi = ReneAPIManager.API();
+
         if (reneApi == null)
         {
             Debug.Log("Not Initalized");
@@ -23,6 +28,20 @@ public class ReneController : MonoBehaviour
         }       
         await reneApi.Game().Connect(email);
         StaticCoroutine.Start(ConnectReneService());
+    }
+
+    public static async void MintBooster()
+    {
+
+        await reneApi.Game().AssetMint(BOOSTER_TEMPLATE_ID);
+        Debug.Log("Booster minted!");
+    }
+
+    public static async void MintCoin()
+    {
+
+        await reneApi.Game().AssetMint(COIN_TEMPLATE_ID);
+        Debug.Log("Coin minted!");
     }
 
     public static async Task SearchForPlayers()
@@ -80,7 +99,7 @@ public class ReneController : MonoBehaviour
         //By this way you could check in the Unity console your NFT assets
         userAssets?.Items.ForEach
         (asset => Debug.Log
-            ($" - Asset Id '{asset.NftId}' Name '{asset.Metadata.Name}"));
+            ($" - Asset Id '{asset.NftId}' Name '{asset.Metadata.Name}' Asset template id' {asset.AssetTemplateId}"));
         userAssets?.Items.ForEach(asset =>
         {
             Debug.Log("Assest " + asset.ToString());

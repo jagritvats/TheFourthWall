@@ -237,7 +237,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reneverseConnectionStatus: {fileID: 1724573041}
-  reneController: {fileID: 0}
   emailInput: {fileID: 2039429959}
 --- !u!4 &182885142
 Transform:

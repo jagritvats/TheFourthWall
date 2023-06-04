@@ -1,36 +1,27 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using Rene.Sdk;
 using Rene.Sdk.Api.Game.Data;
+using ReneVerse;
 using UnityEngine;
 
 namespace ReneVerse.Demo
 {
     public class ReneVerseServiceExample : MonoBehaviour
     {
-        [SerializeField] private ReneverseUIExample reneVerseUI;
         [SerializeField] [Range(0, 60)] private int secondsToWait = 30;
+        
 
-
-        private void OnEnable()
-        {
-            reneVerseUI.OnReneVerseConnectClicked += ReneVerseConnectClicked;
-        }
-
-        private void OnDisable()
-        {
-            reneVerseUI.OnReneVerseConnectClicked -= ReneVerseConnectClicked;
-        }
-
-        private async void ReneVerseConnectClicked(string email)
+        public async void ReneVerseConnectClicked(string email, Action<string> onConnectedReneverse = null)
         {
             var reneApi = ReneAPIManager.API();
 
             var connected = await reneApi.Game().Connect(email);
-            StartCoroutine(ConnectReneService(reneApi));
+            StartCoroutine(ConnectReneService(reneApi, onConnectedReneverse));
         }
 
-        private IEnumerator ConnectReneService(API reneApi)
+        private IEnumerator ConnectReneService(API reneApi, Action<string> onConnectedReneverse = null)
         {
             var counter = 0;
             var userConnected = false;
@@ -41,7 +32,7 @@ namespace ReneVerse.Demo
                 if (reneApi.IsAuthorized())
                 {
                     print("User successfully connected!");
-                    yield return GetUserAssetsAsync(reneApi);
+                    yield return GetUserAssetsAsync(reneApi, onConnectedReneverse);
                     userConnected = true;
                 }
 
@@ -50,12 +41,12 @@ namespace ReneVerse.Demo
             }
         }
 
-        private async Task GetUserAssetsAsync(API reneApi)
+        private async Task GetUserAssetsAsync(API reneApi, Action<string> onConnectedReneverse = null)
         {
             AssetsResponse.AssetsData userAssets = await reneApi.Game().Assets();
-            userAssets?.Items.ForEach
+            /*userAssets?.Items.ForEach
             (asset => Debug.Log
-                ($" - Asset Id '{asset.NftId}' Name '{asset.Metadata.Name}"));
+                ($" - Asset Id '{asset.NftId}' Name '{asset.Metadata.Name}"));*/
 
 
             userAssets?.Items.ForEach(asset =>
@@ -65,7 +56,8 @@ namespace ReneVerse.Demo
                 string assetStyle = "";
                 asset.Metadata?.Attributes?.ForEach(attribute =>
                 {
-                    print($"TraitType {attribute.TraitType} has value of {attribute.Value}");
+                    onConnectedReneverse?.Invoke
+                        ($"TraitType {attribute.TraitType} has value of {attribute.Value}");
                 });
             });
         }

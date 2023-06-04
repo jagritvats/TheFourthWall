@@ -10,6 +10,9 @@ public class CoinController : MonoBehaviour
     public GameManager manager;
     public SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
+
+    public static string COIN_TEMPLATE_ID = "0e7f37bd-7075-4cc1-a927-935ed9cd51a7";
+
     void Start()
     {
         coinClip = GetComponent<AudioSource>();
@@ -23,6 +26,7 @@ public class CoinController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        ReneController.MintCoin();
         Debug.Log("Coin Collected");
         GetComponent<AudioSource>().PlayOneShot(AudioClip);
         spriteRenderer.enabled = false;

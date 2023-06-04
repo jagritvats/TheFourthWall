@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ReneVerse;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,21 +11,22 @@ namespace ReneVerse.Demo
     {
         private const string EmailFail = "Type Correct Email";
         private const string Connect = "Connect";
+        private const string Connected = "Connected!";
+
+        [SerializeField] private ReneVerseServiceExample _reneVerseServiceExample;
 
         [Header("ReneVerse Connect Button")] [SerializeField]
         private Button reneVerseConnect;
 
         [SerializeField] private TextMeshProUGUI connectButtonText;
-    
-    
-        [Header("ReneVerse Email Input Field")]
-        [SerializeField] private TextMeshProUGUI inputPlaceHolder;
-        [SerializeField] private TMP_InputField reneVerseEmail;
+        [SerializeField] private TextMeshProUGUI reneOutput;
 
-        /// <summary>
-        /// Feel free to move this Action to Inject or directly reference
-        /// </summary>
-        public event Action<string> OnReneVerseConnectClicked;
+
+        [Header("ReneVerse Email Input Field")] [SerializeField]
+        private TMP_InputField reneVerseEmail;
+
+        private Coroutine _connectingDotsCoroutine;
+
         private bool IsNotValidEmail => !reneVerseEmail.text.IsEmail();
         private bool EmptyEmailField => string.IsNullOrEmpty(reneVerseEmail.text);
 
@@ -57,9 +59,17 @@ namespace ReneVerse.Demo
             Disable(reneVerseEmail);
 
 
-            StartCoroutine(ConnectingDotsAnimation(connectButtonText));
+            _connectingDotsCoroutine = StartCoroutine(ConnectingDotsAnimation(connectButtonText));
 
-            OnReneVerseConnectClicked?.Invoke(reneVerseEmail.text);
+            //Here happens the connection itself
+            _reneVerseServiceExample.ReneVerseConnectClicked(reneVerseEmail.text, OnReneConnected);
+        }
+
+        private void OnReneConnected(string reneAssetsData)
+        {
+            StopCoroutine(_connectingDotsCoroutine);
+            reneOutput.text += reneAssetsData + "\n";
+            connectButtonText.text = Connected;
         }
 
         private void ChangeText(TextMeshProUGUI textMeshProUGUI, string text) => textMeshProUGUI.text = text;
